@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choco Hub | Artisan Chocolate Factory</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        choco: {
+                            900: '#1A0F0D',
+                            800: '#2C1810',
+                            700: '#3D2317',
+                            600: '#5C3322',
+                        },
+                        cream: {
+                            100: '#FDFBF7',
+                            200: '#F5EBE0',
+                            300: '#E3D5CA',
+                        },
+                        gold: {
+                            500: '#D4A373',
+                            600: '#BC6C25',
+                            400: '#E9EDC9',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar and aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1A0F0D;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3D2317;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D4A373;
+        }
+        .glass-nav {
+            background: rgba(26, 15, 13, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .hero-gradient {
+            background: radial-gradient(circle at center, rgba(61, 35, 23, 0.8) 0%, rgba(26, 15, 13, 0.95) 100%);
+        }
+        /* Fallback box style */
+        .img-fallback {
+            background: linear-gradient(135deg, #2C1810 0%, #3D2317 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #D4A373;
+            text-align: center;
+            padding: 1.5rem;
+        }
+    </style>
+</head>
+<body class="bg-choco-900 text-cream-100 font-sans antialiased selection:bg-gold-500 selection:text-choco-900">
+
+    <!-- 1. Sticky Glassmorphism Navigation Bar -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-white/10 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#home" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 rounded-full bg-gold-500 flex items-center justify-center text-choco-900 font-serif font-bold text-xl shadow-lg group-hover:scale-105 transition-transform">
+                    C
+                </div>
+                <div>
+                    <span class="font-serif text-2xl font-bold tracking-wider text-cream-100">CHOCO HUB</span>
+                    <span class="block text-[10px] uppercase tracking-widest text-gold-500 font-semibold">Artisanal Factory</span>
+                </div>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="#home" class="text-sm font-medium hover:text-gold-500 transition-colors">Home</a>
+                <a href="#collections" class="text-sm font-medium hover:text-gold-500 transition-colors">Collections</a>
+                <a href="#lab" class="text-sm font-medium hover:text-gold-500 transition-colors">Chocolate Lab</a>
+                <a href="#story" class="text-sm font-medium hover:text-gold-500 transition-colors">Our Story</a>
+            </nav>
+
+            <!-- Actions -->
+            <div class="flex items-center space-x-4">
+                <button onclick="openBag()" class="relative bg-choco-800 hover:bg-choco-700 border border-gold-500/30 px-4 py-2.5 rounded-full flex items-center space-x-2 transition-all hover:border-gold-500">
+                    <i class="fa-solid fa-bag-shopping text-gold-500"></i>
+                    <span class="text-xs font-semibold tracking-wider uppercase hidden sm:inline">Bag</span>
+                    <span id="bag-counter" class="bg-gold-500 text-choco-900 font-bold text-[11px] w-5 h-5 rounded-full flex items-center justify-center shadow">0</span>
+                </button>
+                <button onclick="mobileMenuToggle()" class="md:hidden text-cream-100 hover:text-gold-500 p-2">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-choco-800/95 border-b border-white/10 px-6 py-4 space-y-3">
+            <a href="#home" onclick="mobileMenuToggle()" class="block text-sm font-medium hover:text-gold-500">Home</a>
+            <a href="#collections" onclick="mobileMenuToggle()" class="block text-sm font-medium hover:text-gold-500">Collections</a>
+            <a href="#lab" onclick="mobileMenuToggle()" class="block text-sm font-medium hover:text-gold-500">Chocolate Lab</a>
+            <a href="#story" onclick="mobileMenuToggle()" class="block text-sm font-medium hover:text-gold-500">Our Story</a>
+        </div>
+    </header>
+
+    <!-- 2. Cinematic Editorial Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <!-- Background Imagery with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&q=80&w=2000" alt="Artisanal Chocolates" class="w-full h-full object-cover opacity-30 transform scale-105 animate-pulse duration-[10000ms]" onerror="this.replaceWith(createFallbackDiv('Choco Hub Hero Background', 'h-full w-full'))">
+            <div class="absolute inset-0 hero-gradient"></div>
+        </div>
+
+        <div class="relative z-10 max-w-5xl mx-auto px-4 text-center py-20">
+            <div class="inline-flex items-center space-x-2 bg-gold-500/10 border border-gold-500/30 px-4 py-1.5 rounded-full mb-6">
+                <i class="fa-solid fa-certificate text-gold-500 text-xs"></i>
+                <span class="text-xs uppercase tracking-widest text-gold-400 font-semibold">100% Organic & Small Batch</span>
+            </div>
+
+            <h1 class="font-serif text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-cream-100 mb-6 leading-tight">
+                Artisan choco, <br><span class="italic font-normal text-gold-500">crafted for the soul</span>
+            </h1>
+
+            <p class="max-w-2xl mx-auto text-cream-300 text-base sm:text-lg mb-10 leading-relaxed font-light">
+                Hand-poured in small batches using single-origin Indian cacao beans, infused with rare botanicals, and perfected with traditional Belgian artistry.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#collections" class="w-full sm:w-auto bg-gold-500 hover:bg-gold-600 text-choco-900 font-bold px-8 py-4 rounded-full shadow-lg transition-all transform hover:-translate-y-0.5 flex items-center justify-center space-x-2">
+                    <span>Explore Collections</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+                <a href="#lab" class="w-full sm:w-auto bg-choco-800 hover:bg-choco-700 border border-gold-500/40 text-cream-100 font-semibold px-8 py-4 rounded-full transition-all hover:border-gold-500 flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-flask text-gold-500"></i>
+                    <span>Build Custom Box</span>
+                </a>
+            </div>
+
+            <!-- Trust Badges -->
+            <div class="mt-20 pt-10 border-t border-white/10 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div class="space-y-1">
+                    <i class="fa-solid fa-seedling text-gold-500 text-xl mb-1"></i>
+                    <h4 class="text-sm font-semibold text-cream-100">Single Origin</h4>
+                    <p class="text-xs text-cream-300">Idukki & Anamalai Hills</p>
+                </div>
+                <div class="space-y-1">
+                    <i class="fa-solid fa-hand-holding-heart text-gold-500 text-xl mb-1"></i>
+                    <h4 class="text-sm font-semibold text-cream-100">Handcrafted</h4>
+                    <p class="text-xs text-cream-300">Tempered by Master Confectioners</p>
+                </div>
+                <div class="space-y-1">
+                    <i class="fa-solid fa-leaf text-gold-500 text-xl mb-1"></i>
+                    <h4 class="text-sm font-semibold text-cream-100">Zero Palm Oil</h4>
+                    <p class="text-xs text-cream-300">Pure Cocoa Butter Only</p>
+                </div>
+                <div class="space-y-1">
+                    <i class="fa-solid fa-box-open text-gold-500 text-xl mb-1"></i>
+                    <h4 class="text-sm font-semibold text-cream-100">Eco Luxury</h4>
+                    <p class="text-xs text-cream-300">100% Biodegradable Packaging</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Comprehensive All-Chocolates Showcase Grid -->
+    <section id="collections" class="py-24 bg-choco-800/50 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-gold-500 uppercase tracking-widest text-xs font-semibold block mb-2">Our Masterpieces</span>
+                <h2 class="font-serif text-4xl sm:text-5xl font-bold text-cream-100 mb-4">The Artisanal Collection</h2>
+                <p class="text-cream-300 text-sm sm:text-base">Filter through our exquisite selections crafted for every mood and palate.</p>
+            </div>
+
+            <!-- Filter Tabs -->
+            <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-12">
+                <button onclick="filterProducts('all')" class="filter-btn active-tab px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all bg-gold-500 text-choco-900 shadow">All Treats</button>
+                <button onclick="filterProducts('bestsellers')" class="filter-btn px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all bg-choco-800 text-cream-300 hover:text-cream-100 hover:bg-choco-700 border border-white/5">Bestsellers</button>
+                <button onclick="filterProducts('seasonal')" class="filter-btn px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all bg-choco-800 text-cream-300 hover:text-cream-100 hover:bg-choco-700 border border-white/5">Seasonal Varieties</button>
+                <button onclick="filterProducts('infused')" class="filter-btn px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all bg-choco-800 text-cream-300 hover:text-cream-100 hover:bg-choco-700 border border-white/5">Unique & Infused</button>
+                <button onclick="filterProducts('celebrity')" class="filter-btn px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all bg-choco-800 text-cream-300 hover:text-cream-100 hover:bg-choco-700 border border-white/5">Celebrity Picks</button>
+                <button onclick="filterProducts('giftboxes')" class="filter-btn px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all bg-choco-800 text-cream-300 hover:text-cream-100 hover:bg-choco-700 border border-white/5">Custom Gift Boxes</button>
+            </div>
+
+            <!-- Products Grid -->
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Products will be injected dynamically via JS for filtering -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. The 'Chocolate Lab' Interactive Customizer -->
+    <section id="lab" class="py-24 bg-choco-900 relative overflow-hidden">
+        <div class="absolute -right-20 -top-20 w-96 h-96 bg-gold-500/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-gold-500 uppercase tracking-widest text-xs font-semibold block mb-2">Interactive Experience</span>
+                <h2 class="font-serif text-4xl sm:text-5xl font-bold text-cream-100 mb-4">The Chocolate Lab</h2>
+                <p class="text-cream-300 text-sm sm:text-base">Design your bespoke artisanal chocolate box in real-time. Pick your base, select your infusion, and choose your size.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Options Panel -->
+                <div class="lg:col-span-7 bg-choco-800/80 border border-white/10 rounded-3xl p-6 sm:p-8 space-y-8 backdrop-blur-md">
+                    <!-- Step 1: Base -->
+                    <div>
+                        <label class="block text-xs font-bold tracking-widest uppercase text-gold-500 mb-3">1. Select Chocolate Base</label>
+                        <div class="grid grid-cols-3 gap-3">
+                            <button onclick="setLabBase('Dark 72%', 499, 'https://images.unsplash.com/photo-1511381939415-e44015466834?auto=format&fit=crop&q=80&w=600')" class="lab-base-btn p-4 rounded-2xl border border-gold-500 bg-choco-700 text-center transition-all">
+                                <span class="block font-serif font-bold text-cream-100 text-sm sm:text-base">Dark 72%</span>
+                                <span class="text-xs text-gold-400">Rich & Intense</span>
+                            </button>
+                            <button onclick="setLabBase('Milk 45%', 449, 'https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?auto=format&fit=crop&q=80&w=600')" class="lab-base-btn p-4 rounded-2xl border border-white/10 bg-choco-900/60 text-center transition-all hover:border-gold-500/50">
+                                <span class="block font-serif font-bold text-cream-100 text-sm sm:text-base">Milk 45%</span>
+                                <span class="text-xs text-cream-300">Creamy & Smooth</span>
+                            </button>
+                            <button onclick="setLabBase('White Vanilla', 479, 'https://images.unsplash.com/photo-1606312619070-d48b4c652a52?auto=format&fit=crop&q=80&w=600')" class="lab-base-btn p-4 rounded-2xl border border-white/10 bg-choco-900/60 text-center transition-all hover:border-gold-500/50">
+                                <span class="block font-serif font-bold text-cream-100 text-sm sm:text-base">White Vanilla</span>
+                                <span class="text-xs text-cream-300">Sweet & Floral</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Infusion -->
+                    <div>
+                        <label class="block text-xs font-bold tracking-widest uppercase text-gold-500 mb-3">2. Signature Infusion</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            <button onclick="setLabInfusion('Roasted Hazelnuts', 50)" class="lab-inf-btn p-3 rounded-xl border border-gold-500 bg-choco-700 text-center transition-all text-xs font-semibold text-cream-100">Hazelnuts</button>
+                            <button onclick="setLabInfusion('Wild Raspberry', 70)" class="lab-inf-btn p-3 rounded-xl border border-white/10 bg-choco-900/60 text-center transition-all text-xs font-semibold text-cream-300 hover:border-gold-500/50">Raspberry</button>
+                            <button onclick="setLabInfusion('Himalayan Sea Salt', 40)" class="lab-inf-btn p-3 rounded-xl border border-white/10 bg-choco-900/60 text-center transition-all text-xs font-semibold text-cream-300 hover:border-gold-500/50">Sea Salt</button>
+                            <button onclick="setLabInfusion('Kashmiri Chili & Orange', 90)" class="lab-inf-btn p-3 rounded-xl border border-white/10 bg-choco-900/60 text-center transition-all text-xs font-semibold text-cream-300 hover:border-gold-500/50">Chili Orange</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Box Size -->
+                    <div>
+                        <label class="block text-xs font-bold tracking-widest uppercase text-gold-500 mb-3">3. Box Packaging Size</label>
+                        <div class="grid grid-cols-3 gap-3">
+                            <button onclick="setLabSize('6 Pcs Box', 0, 6)" class="lab-size-btn p-3 rounded-xl border border-gold-500 bg-choco-700 text-center transition-all text-xs font-semibold text-cream-100">6 Pieces</button>
+                            <button onclick="setLabSize('12 Pcs Box', 350, 12)" class="lab-size-btn p-3 rounded-xl border border-white/10 bg-choco-900/60 text-center transition-all text-xs font-semibold text-cream-300 hover:border-gold-500/50">12 Pieces</button>
+                            <button onclick="setLabSize('24 Pcs Luxury Trunk', 850, 24)" class="lab-size-btn p-3 rounded-xl border border-white/10 bg-choco-900/60 text-center transition-all text-xs font-semibold text-cream-300 hover:border-gold-500/50">24 Pcs Trunk</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Preview Card -->
+                <div class="lg:col-span-5 bg-gradient-to-b from-choco-800 to-choco-900 border border-gold-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl sticky top-28">
+                    <div class="relative h-60 rounded-2xl overflow-hidden mb-6 border border-white/10">
+                        <img id="lab-preview-img" src="https://images.unsplash.com/photo-1511381939415-e44015466834?auto=format&fit=crop&q=80&w=600" alt="Custom Lab Box" class="w-full h-full object-cover transition-all duration-500" onerror="this.replaceWith(createFallbackDiv('Custom Box Preview', 'h-full w-full'))">
+                        <div class="absolute top-3 right-3 bg-choco-900/80 backdrop-blur-md px-3 py-1 rounded-full border border-gold-500/40 text-[11px] font-semibold text-gold-400">
+                            Custom Creation
+                        </div>
+                    </div>
+
+                    <h3 class="font-serif text-2xl font-bold text-cream-100 mb-2">Bespoke Artisan Box</h3>
+                    <div class="space-y-2 py-4 border-y border-white/10 text-xs sm:text-sm text-cream-300 mb-6">
+                        <div class="flex justify-between"><span>Base:</span> <strong id="summary-base" class="text-cream-100 font-medium">Dark 72%</strong></div>
+                        <div class="flex justify-between"><span>Infusion:</span> <strong id="summary-infusion" class="text-cream-100 font-medium">Roasted Hazelnuts</strong></div>
+                        <div class="flex justify-between"><span>Format:</span> <strong id="summary-size" class="text-cream-100 font-medium">6 Pcs Box</strong></div>
+                    </div>
+
+                    <div class="flex items-center justify-between mb-6">
+                        <span class="text-xs uppercase tracking-widest text-cream-300">Total Price</span>
+                        <span id="lab-total-price" class="font-serif text-3xl font-bold text-gold-500">₹549</span>
+                    </div>
+
+                    <button onclick="addCustomLabToBag()" class="w-full bg-gold-500 hover:bg-gold-600 text-choco-900 font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-plus text-xs"></i>
+                        <span>Add Custom Box to Bag</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Story Section -->
+    <section id="story" class="py-24 bg-choco-800/30 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="relative rounded-3xl overflow-hidden h-96 border border-white/10 shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1548907040-4baa42d10919?auto=format&fit=crop&q=80&w=800" alt="Chocolate Maker" class="w-full h-full object-cover" onerror="this.replaceWith(createFallbackDiv('Choco Hub Master Kitchen', 'h-full w-full'))">
+                </div>
+                <div class="space-y-6">
+                    <span class="text-gold-500 uppercase tracking-widest text-xs font-semibold block">The Choco Hub Philosophy</span>
+                    <h2 class="font-serif text-4xl sm:text-5xl font-bold text-cream-100 leading-tight">From Bean to Bar, Crafted With Passion</h2>
+                    <p class="text-cream-300 text-sm sm:text-base leading-relaxed">
+                        Founded in the verdant foothills of the Western Ghats, Choco Hub began as a humble kitchen experiment by pastry chefs devoted to highlighting Indian single-origin cacao. Today, we work directly with sustainable farmers to ferment, roast, and stone-grind beans into world-class chocolates without preservatives or artificial emulsifiers.
+                    </p>
+                    <div class="grid grid-cols-3 gap-6 pt-4 border-t border-white/10">
+                        <div>
+                            <span class="block font-serif text-3xl font-bold text-gold-500">72hr</span>
+                            <span class="text-xs text-cream-300">Stone Conching</span>
+                        </div>
+                        <div>
+                            <span class="block font-serif text-3xl font-bold text-gold-500">100%</span>
+                            <span class="text-xs text-cream-300">Natural Cacao</span>
+                        </div>
+                        <div>
+                            <span class="block font-serif text-3xl font-bold text-gold-500">15+</span>
+                            <span class="text-xs text-cream-300">Master Infusions</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-choco-900 border-t border-white/10 pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+            <div class="space-y-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-full bg-gold-500 flex items-center justify-center text-choco-900 font-serif font-bold text-lg">C</div>
+                    <span class="font-serif text-xl font-bold text-cream-100">CHOCO HUB</span>
+                </div>
+                <p class="text-xs text-cream-300 leading-relaxed">Artisanal bean-to-bar chocolates crafted for connoisseurs and chocolate lovers across India.</p>
+                <div class="flex space-x-4 text-gold-500">
+                    <a href="#" class="hover:text-cream-100 transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="hover:text-cream-100 transition-colors"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="hover:text-cream-100 transition-colors"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-serif font-bold text-cream-100 mb-4 text-sm tracking-wider uppercase">Quick Links</h4>
+                <ul class="space-y-2 text-xs text-cream-300">
+                    <li><a href="#home" class="hover:text-gold-500 transition-colors">Home</a></li>
+                    <li><a href="#collections" class="hover:text-gold-500 transition-colors">Collections</a></li>
+                    <li><a href="#lab" class="hover:text-gold-500 transition-colors">Chocolate Lab</a></li>
+                    <li><a href="#story" class="hover:text-gold-500 transition-colors">Our Story</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-serif font-bold text-cream-100 mb-4 text-sm tracking-wider uppercase">Collections</h4>
+                <ul class="space-y-2 text-xs text-cream-300">
+                    <li><a href="#collections" onclick="filterProducts('bestsellers')" class="hover:text-gold-500 transition-colors">Bestsellers</a></li>
+                    <li><a href="#collections" onclick="filterProducts('seasonal')" class="hover:text-gold-500 transition-colors">Seasonal Varieties</a></li>
+                    <li><a href="#collections" onclick="filterProducts('infused')" class="hover:text-gold-500 transition-colors">Unique Infusions</a></li>
+                    <li><a href="#collections" onclick="filterProducts('celebrity')" class="hover:text-gold-500 transition-colors">Celebrity Picks</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-serif font-bold text-cream-100 mb-4 text-sm tracking-wider uppercase">Newsletter</h4>
+                <p class="text-xs text-cream-300 mb-3">Subscribe to receive secret discount codes and seasonal release drops.</p>
+                <form onsubmit="event.preventDefault(); alert('Thank you for subscribing to Choco Hub!');" class="space-y-2">
+                    <input type="email" placeholder="Enter your email" required class="w-full bg-choco-800 border border-white/10 rounded-lg px-3 py-2 text-xs text-cream-100 focus:outline-none focus:border-gold-500">
+                    <button type="submit" class="w-full bg-gold-500 hover:bg-gold-600 text-choco-900 font-bold py-2 rounded-lg text-xs transition-colors">Join Club</button>
+                </form>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 border-t border-white/5 text-center text-xs text-cream-300/60">
+            &copy; 2026 Choco Hub Factory. All rights reserved. Handcrafted with love in India.
+        </div>
+    </footer>
+
+    <!-- 5. Random Trivia & Specialty Pop-up System -->
+    <div id="trivia-modal" class="fixed bottom-6 right-6 z-40 max-w-sm bg-choco-800/95 border border-gold-500/40 rounded-2xl p-5 shadow-2xl backdrop-blur-md transform translate-y-32 opacity-0 transition-all duration-500 hidden">
+        <div class="flex items-start justify-between mb-2">
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-lightbulb text-gold-500"></i>
+                <h4 class="font-serif font-bold text-cream-100 text-sm" id="trivia-title">Choco Hub Kitchen Secret</h4>
+            </div>
+            <button onclick="closeTrivia()" class="text-cream-300 hover:text-cream-100 text-xs"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <p id="trivia-text" class="text-xs text-cream-300 leading-relaxed mb-3">Did you know? Our dark chocolate is stone-ground for a full 72 hours to achieve micro-silkiness without using soy lecithin.</p>
+        <div class="flex justify-end">
+            <button onclick="closeTrivia()" class="text-[11px] font-semibold text-gold-500 hover:underline">Got it, thanks!</button>
+        </div>
+    </div>
+
+    <!-- 6. Live Urgency Toast Notifications -->
+    <div id="toast-container" class="fixed bottom-6 left-6 z-40 pointer-events-none space-y-2">
+        <!-- Dynamic Toast inserted via JS -->
+    </div>
+
+    <!-- 7. Interactive Slide-over Bag & WhatsApp Checkout Drawer -->
+    <div id="bag-drawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity" onclick="closeBag()"></div>
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-choco-900 border-l border-white/10 flex flex-col shadow-2xl">
+                <!-- Drawer Header -->
+                <div class="p-6 border-b border-white/10 flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-bag-shopping text-gold-500"></i>
+                        <h3 class="font-serif font-bold text-cream-100 text-lg">Your Chocolate Bag</h3>
+                    </div>
+                    <button onclick="closeBag()" class="text-cream-300 hover:text-cream-100 p-2"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+
+                <!-- Bag Items List -->
+                <div id="bag-items" class="flex-1 overflow-y-auto p-6 space-y-4">
+                    <!-- Dynamic Cart Items -->
+                </div>
+
+                <!-- Drawer Footer & Checkout -->
+                <div class="p-6 border-t border-white/10 bg-choco-800/50 space-y-4">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-cream-300">Subtotal</span>
+                        <span id="bag-subtotal" class="font-serif font-bold text-cream-100">₹0</span>
+                    </div>
+                    <div class="flex justify-between text-xs text-cream-300 pb-2 border-b border-white/10">
+                        <span>Shipping (Pan-India Express)</span>
+                        <span class="text-gold-500 font-semibold">FREE</span>
+                    </div>
+                    <div class="flex justify-between text-base font-bold">
+                        <span class="text-cream-100">Total</span>
+                        <span id="bag-total" class="font-serif text-xl text-gold-500">₹0</span>
+                    </div>
+
+                    <button onclick="checkoutWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl shadow-lg transition-all flex items-center justify-center space-x-2 text-sm">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <span>Checkout via WhatsApp</span>
+                    </button>
+                    <p class="text-[10px] text-center text-cream-300/70">Instant secure ordering directly with our master chocolatiers.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // 8. Robust Image Fallback Creator
+        function createFallbackDiv(title, className = 'h-48 w-full') {
+            const div = document.createElement('div');
+            div.className = `img-fallback ${className} rounded-2xl`;
+            div.innerHTML = `
+                <i class="fa-solid fa-cookie-bite text-2xl mb-2 text-gold-500"></i>
+                <span class="font-serif text-xs font-bold text-cream-100">${title}</span>
+                <span class="text-[10px] text-cream-300 mt-1">Choco Hub Artisan Factory</span>
+            `;
+            return div;
+        }
+
+        // Product Dataset
+        const products = [
+            {
+                id: 1,
+                name: '24K Gold Leaf Truffle Box',
+                category: 'celebrity',
+                price: 1299,
+                rating: 4.9,
+                reviews: 142,
+                badge: 'Celebrity Pick',
+                desc: 'Hand-rolled ganache infused with single-origin Madagascar cocoa, crowned with edible 24K gold leaf.',
+                image: 'https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&q=80&w=600'
+            },
+            {
+                id: 2,
+                name: 'Himalayan Chili & Sea Salt Dark Bar',
+                category: 'infused',
+                price: 499,
+                rating: 4.8,
+                reviews: 98,
+                badge: 'Unique Infusion',
+                desc: '72% dark chocolate spiced gently with Kashmiri chili flakes and flaky pink Himalayan salt crystals.',
+                image: 'https://images.unsplash.com/photo-1511381939415-e44015466834?auto=format&fit=crop&q=80&w=600'
+            },
+            {
+                id: 3,
+                name: 'Signature Artisanal Bestseller Pralines',
+                category: 'bestsellers',
+                price: 899,
+                rating: 5.0,
+                reviews: 310,
+                badge: 'Bestseller',
+                desc: 'An assortment of 12 signature hazelnut praline, roasted almond, and sea-salt caramel domes.',
+                image: 'https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?auto=format&fit=crop&q=80&w=600'
+            },
+            {
+                id: 4,
+                name: 'Winter Spiced Orange & Clove Bar',
+                category: 'seasonal',
+                price: 450,
+                rating: 4.7,
+                reviews: 64,
+                badge: 'Seasonal',
+                desc: 'Crafted with sun-dried organic oranges and aromatic Kerala cloves folded into rich milk chocolate.',
+                image: 'https://images.unsplash.com/photo-1606312619070-d48b4c652a52?auto=format&fit=crop&q=80&w=600'
+            },
+            {
+                id: 5,
+                name: 'Grand Luxury Gift Trunk (36 Pcs)',
+                category: 'giftboxes',
+                price: 2499,
+                rating: 4.9,
+                reviews: 215,
+                badge: 'Gift Box',
+                desc: 'Our finest mahogany wooden keepsake box packed with truffles, mendiants, and single-origin squares.',
+                image: 'https://images.unsplash.com/photo-1548907040-4baa42d10919?auto=format&fit=crop&q=80&w=600'
+            },
+            {
+                id: 6,
+                name: 'Alphanzo Mango Infused White Chocolate',
+                category: 'infused',
+                price: 520,
+                rating: 4.8,
+                reviews: 88,
+                badge: 'Limited Edition',
+                desc: 'Creamy white cocoa butter blended with authentic Ratnagiri Alphonso mango puree and roasted pistachios.',
+                image: 'https://images.unsplash.com/photo-1526085160495-d225dc4b6845?auto=format&fit=crop&q=80&w=600'
+            },
+            {
+                id: 7,
+                name: 'Classic Dark Hazelnut Mendiants',
+                category: 'bestsellers',
+                price: 699,
+                rating: 4.9,
+                reviews: 176,
+                badge: 'Bestseller',
+                desc: 'Thin discs of 64% dark chocolate topped generously with roasted California almonds and Turkish hazelnuts.',
+                image: 'https://images.unsplash.com/photo-1575433151833-244eab8b90f5?auto=format&fit=crop&q=80&w=600'
+            },
+            {
+                id: 8,
+                name: 'Royal Celebration Festive Box',
+                category: 'giftboxes',
+                price: 1599,
+                rating: 5.0,
+                reviews: 120,
+                badge: 'Gift Box',
+                desc: 'Handcrafted selection designed for weddings, anniversaries, and festive gifting with gold embossing.',
+                image: 'https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&q=80&w=600'
+            }
+        ];
+
+        // Shopping Bag State
+        let bag = [];
+
+        // Render Products
+        function renderProducts(filter = 'all') {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+
+            const filtered = filter === 'all' ? products : products.filter(p => p.category === filter);
+
+            filtered.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'bg-choco-800/60 border border-white/10 rounded-3xl overflow-hidden shadow-xl hover:border-gold-500/50 transition-all duration-300 flex flex-col group';
+                
+                card.innerHTML = `
+                    <div class="relative h-64 overflow-hidden bg-choco-900">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.replaceWith(createFallbackDiv('${product.name}', 'h-full w-full'))">
+                        <div class="absolute top-3 left-3 bg-choco-900/80 backdrop-blur-md px-3 py-1 rounded-full border border-gold-500/30 text-[11px] font-semibold text-gold-400">
+                            ${product.badge}
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center space-x-1 text-gold-500 text-xs">
+                                    <i class="fa-solid fa-star"></i>
+                                    <span class="font-bold text-cream-100">${product.rating}</span>
+                                    <span class="text-cream-300">(${product.reviews})</span>
+                                </div>
+                                <span class="font-serif font-bold text-lg text-gold-500">₹${product.price}</span>
+                            </div>
+                            <h3 class="font-serif font-bold text-lg text-cream-100 mb-2">${product.name}</h3>
+                            <p class="text-xs text-cream-300 leading-relaxed">${product.desc}</p>
+                        </div>
+                        <button onclick="addToBag('${product.name}', ${product.price}, '${product.image}')" class="w-full bg-choco-700 hover:bg-gold-500 hover:text-choco-900 text-cream-100 font-semibold py-3 rounded-xl transition-all flex items-center justify-center space-x-2 text-xs border border-white/10">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                            <span>+ Add to Bag</span>
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Filter Tabs Click handler
+        function filterProducts(category) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-gold-500', 'text-choco-900', 'shadow');
+                btn.classList.add('bg-choco-800', 'text-cream-300');
+            });
+            event.target.classList.remove('bg-choco-800', 'text-cream-300');
+            event.target.classList.add('bg-gold-500', 'text-choco-900', 'shadow');
+            renderProducts(category);
+        }
+
+        // Lab Customizer State
+        let labConfig = {
+            base: 'Dark 72%',
+            basePrice: 499,
+            baseImg: 'https://images.unsplash.com/photo-1511381939415-e44015466834?auto=format&fit=crop&q=80&w=600',
+            infusion: 'Roasted Hazelnuts',
+            infusionPrice: 50,
+            size: '6 Pcs Box',
+            sizePrice: 0,
+            pieces: 6
+        };
+
+        function setLabBase(name, price, img) {
+            labConfig.base = name;
+            labConfig.basePrice = price;
+            labConfig.baseImg = img;
+            document.getElementById('lab-preview-img').src = img;
+            updateLabUI();
+            highlightSelected('.lab-base-btn', event.currentTarget);
+        }
+
+        function setLabInfusion(name, price) {
+            labConfig.infusion = name;
+            labConfig.infusionPrice = price;
+            updateLabUI();
+            highlightSelected('.lab-inf-btn', event.currentTarget);
+        }
+
+        function setLabSize(name, price, pcs) {
+            labConfig.size = name;
+            labConfig.sizePrice = price;
+            labConfig.pieces = pcs;
+            updateLabUI();
+            highlightSelected('.lab-size-btn', event.currentTarget);
+        }
+
+        function highlightSelected(selector, el) {
+            document.querySelectorAll(selector).forEach(b => {
+                b.classList.remove('border-gold-500', 'bg-choco-700', 'text-cream-100');
+                b.classList.add('border-white/10', 'bg-choco-900/60', 'text-cream-300');
+            });
+            el.classList.remove('border-white/10', 'bg-choco-900/60', 'text-cream-300');
+            el.classList.add('border-gold-500', 'bg-choco-700', 'text-cream-100');
+        }
+
+        function updateLabUI() {
+            document.getElementById('summary-base').innerText = labConfig.base;
+            document.getElementById('summary-infusion').innerText = labConfig.infusion;
+            document.getElementById('summary-size').innerText = labConfig.size;
+            
+            const total = labConfig.basePrice + labConfig.infusionPrice + labConfig.sizePrice;
+            document.getElementById('lab-total-price').innerText = `₹${total}`;
+        }
+
+        function addCustomLabToBag() {
+            const total = labConfig.basePrice + labConfig.infusionPrice + labConfig.sizePrice;
+            const name = `Custom Lab Box (${labConfig.base} + ${labConfig.infusion}, ${labConfig.size})`;
+            addToBag(name, total, labConfig.baseImg);
+        }
+
+        // Cart Functions
+        function addToBag(name, price, image) {
+            const existing = bag.find(item => item.name === name);
+            if (existing) {
+                existing.qty++;
+            } else {
+                bag.push({ name, price, image, qty: 1 });
+            }
+            updateBagDrawer();
+            openBag();
+            showToast(`Added "${name}" to your bag!`);
+        }
+
+        function updateBagDrawer() {
+            const container = document.getElementById('bag-items');
+            const counter = document.getElementById('bag-counter');
+            container.innerHTML = '';
+
+            let totalItems = 0;
+            let subtotal = 0;
+
+            if (bag.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-16 space-y-3">
+                        <i class="fa-solid fa-basket-shopping text-4xl text-cream-300/40"></i>
+                        <p class="text-xs text-cream-300">Your chocolate bag is currently empty.</p>
+                    </div>
+                `;
+            } else {
+                bag.forEach((item, index) => {
+                    totalItems += item.qty;
+                    subtotal += item.price * item.qty;
+
+                    const row = document.createElement('div');
+                    row.className = 'flex items-center justify-between bg-choco-800/80 p-4 rounded-2xl border border-white/5';
+                    row.innerHTML = `
+                        <div class="flex items-center space-x-3">
+                            <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded-xl" onerror="this.replaceWith(createFallbackDiv('Item', 'h-12 w-12'))">
+                            <div>
+                                <h4 class="font-serif font-bold text-xs text-cream-100 max-w-[160px] truncate">${item.name}</h4>
+                                <span class="text-xs text-gold-500 font-semibold">₹${item.price} x ${item.qty}</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="adjustQty(${index}, -1)" class="w-7 h-7 rounded-lg bg-choco-700 text-cream-100 flex items-center justify-center hover:bg-gold-500 hover:text-choco-900 transition-colors"><i class="fa-solid fa-minus text-[10px]"></i></button>
+                            <button onclick="adjustQty(${index}, 1)" class="w-7 h-7 rounded-lg bg-choco-700 text-cream-100 flex items-center justify-center hover:bg-gold-500 hover:text-choco-900 transition-colors"><i class="fa-solid fa-plus text-[10px]"></i></button>
+                        </div>
+                    `;
+                    container.appendChild(row);
+                });
+            }
+
+            counter.innerText = totalItems;
+            document.getElementById('bag-subtotal').innerText = `₹${subtotal}`;
+            document.getElementById('bag-total').innerText = `₹${subtotal}`;
+        }
+
+        function adjustQty(index, delta) {
+            bag[index].qty += delta;
+            if (bag[index].qty <= 0) {
+                bag.splice(index, 1);
+            }
+            updateBagDrawer();
+        }
+
+        function openBag() {
+            document.getElementById('bag-drawer').classList.remove('hidden');
+        }
+
+        function closeBag() {
+            document.getElementById('bag-drawer').classList.add('hidden');
+        }
+
+        function mobileMenuToggle() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // WhatsApp Checkout Integration
+        function checkoutWhatsApp() {
+            if (bag.length === 0) {
+                alert('Your bag is empty. Please add some chocolates before checking out.');
+                return;
+            }
+
+            let subtotal = bag.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            let message = `Hello Choco Hub! I would like to place an order:%0A%0A`;
+            bag.forEach(item => {
+                message += `- ${item.name} (x${item.qty}) : ₹${item.price * item.qty}%0A`;
+            });
+            message += `%0A*Total Amount: ₹${subtotal}*%0APlease confirm my order and shipping details!`;
+
+            const whatsappUrl = `https://wa.me/919876543210?text=${message}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // 5. Random Trivia Pop-up System
+        const triviaList = [
+            { title: "Kitchen Secret: 72h Conching", text: "Our dark chocolate is stone-ground for a full 72 hours to achieve micro-silkiness without artificial emulsifiers." },
+            { title: "Health Benefit: Heart Health", text: "Pure dark chocolate rich in cacao flavonoids helps improve blood flow and maintain healthy blood pressure." },
+            { title: "Farmer Partnership", text: "We source 100% of our single-origin cacao beans directly from independent farmers in Idukki, Kerala, paying 40% above fair trade rates." },
+            { title: "Storage Tip", text: "Never store artisanal chocolate in the fridge! Keep it in a cool, dark cellar between 18°C and 20°C for peak flavor retention." }
+        ];
+
+        let triviaIndex = 0;
+        function showTriviaPopup() {
+            const modal = document.getElementById('trivia-modal');
+            const data = triviaList[triviaIndex];
+            document.getElementById('trivia-title').innerText = data.title;
+            document.getElementById('trivia-text').innerText = data.text;
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('translate-y-32', 'opacity-0');
+            }, 100);
+
+            triviaIndex = (triviaIndex + 1) % triviaList.length;
+
+            // Hide after 8 seconds
+            setTimeout(() => {
+                closeTrivia();
+            }, 8000);
+        }
+
+        function closeTrivia() {
+            const modal = document.getElementById('trivia-modal');
+            modal.classList.add('translate-y-32', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 500);
+        }
+
+        // Schedule Trivia every 25 seconds
+        setInterval(showTriviaPopup, 25000);
+
+        // 6. Live Urgency Toast Notifications System
+        const toastSimulations = [
+            { name: "Priya from Mumbai", item: "Truffle Box" },
+            { name: "Arjun from Bengaluru", item: "Custom Lab 72% Dark Box" },
+            { name: "Sneha from Delhi", item: "24K Gold Leaf Truffles" },
+            { name: "Karan from Chennai", item: "Himalayan Sea Salt Bar" },
+            { name: "Ananya from Pune", item: "Winter Spiced Orange Bar" }
+        ];
+
+        function showLiveToast() {
+            const container = document.getElementById('toast-container');
+            const randomOrder = toastSimulations[Math.floor(Math.random() * toastSimulations.length)];
+
+            const toast = document.createElement('div');
+            toast.className = 'bg-choco-800/95 border border-gold-500/40 text-cream-100 px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-3 backdrop-blur-md transform -translate-x-full opacity-0 transition-all duration-500 pointer-events-auto';
+            toast.innerHTML = `
+                <div class="w-8 h-8 rounded-full bg-gold-500/20 flex items-center justify-center text-gold-500 flex-shrink-0">
+                    <i class="fa-solid fa-bell text-xs"></i>
+                </div>
+                <div>
+                    <p class="text-xs font-semibold text-cream-100">${randomOrder.name} just ordered!</p>
+                    <p class="text-[10px] text-cream-300">Purchased ${randomOrder.item}</p>
+                </div>
+            `;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('-translate-x-full', 'opacity-0');
+            }, 100);
+
+            setTimeout(() => {
+                toast.classList.add('-translate-x-full', 'opacity-0');
+                setTimeout(() => {
+                    toast.remove();
+                }, 500);
+            }, 5000);
+        }
+
+        // Trigger live toast every 18 seconds
+        setInterval(showLiveToast, 18000);
+
+        // Initialize App on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            renderProducts('all');
+            updateLabUI();
+            // Trigger first trivia after 5 seconds
+            setTimeout(showTriviaPopup, 5000);
+        });
+    </script>
+</body>
+</html>
